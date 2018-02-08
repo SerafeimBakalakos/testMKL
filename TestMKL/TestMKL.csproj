@@ -37,7 +37,7 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <PropertyGroup>
-    <StartupObject>MKLtest.Tests.ComputeNETexample</StartupObject>
+    <StartupObject>TestMKL.Tests.ConversionTests</StartupObject>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Compute.Bindings.IntelMKL, Version=0.1.5.0, Culture=neutral, processorArchitecture=AMD64">
@@ -60,9 +60,11 @@
     <Compile Include="Benchmarks\SparseMatrices.cs" />
     <Compile Include="Benchmarks\SymmetricMatrices.cs" />
     <Compile Include="Benchmarks\TriangularMatrices.cs" />
+    <Compile Include="Conversions.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Tests\ComputeNETexample.cs" />
+    <Compile Include="Tests\ConversionTests.cs" />
     <Compile Include="Utilities.cs" />
   </ItemGroup>
   <ItemGroup>

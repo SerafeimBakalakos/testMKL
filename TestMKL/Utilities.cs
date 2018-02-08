@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace MKLtest
+namespace TestMKL
 {
-    static class Utilities
+    public static class Utilities
     {
         public static double[] Round(double[] array, int decimals)
         {
@@ -29,6 +29,31 @@ namespace MKLtest
                 }
             }
             return rounded;
+        }
+
+        public static bool AreIdentical(double[] a, double[] b)
+        {
+            if (a.Length != b.Length) return false;
+            for (int i = 0; i < a.Length; ++i)
+            {
+                if (a[i] != b[i]) return false;
+            }
+            return true;
+        }
+
+        public static bool AreIdentical(double[,] a, double[,] b)
+        {
+            if (a.GetLength(0) != b.GetLength(0)) return false;
+            if (a.GetLength(1) != b.GetLength(1)) return false;
+            for (int i = 0; i < a.GetLength(0); ++i)
+            {
+                for (int j = 0; j < a.GetLength(1); ++j)
+                {
+                    if (a[i, j] != b[i, j]) return false;
+
+                }
+            }
+            return true;
         }
     }
 }
