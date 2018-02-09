@@ -4,12 +4,13 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace MKLtest.Benchmarks
+namespace TestMKL.Benchmarks
 {
-    class DenseMatrices
+    static class DenseMatrices
     {
+        public const int order = 10; 
         // During LU (and elimination) it will need pivoting at entry [2,2]
-        public double[,] matrixPivot = new double[,] {
+        public static double[,] matrixPivot = new double[,] {
             { 1.0000,    2.6667,    7.0000,    5.0000,    2.5000,    9.0000,    6.0000,    2.2500,    4.0000,    3.0000 },
             { 0.0000,    0.3333,    1.0000,   -2.5000,    5.5000,   -7.7500,    2.0000,    5.7500,    3.0000,    2.0000 },
             { 2.0000,    2.0000,    4.0000,    9.0000,    1.7500,    5.0000,    3.5000,    2.0000,    6.0000,    8.0000 },
@@ -22,7 +23,7 @@ namespace MKLtest.Benchmarks
             { 3.0000,    7.0000,    9.0000,    4.0000,    2.6667,    9.0000,    8.0000,    5.0000,    7.0000,    3.0000 }};
 
         //positive definite
-        public double[,] matrixPosdef = new double[,] {
+        public static double[,] matrixPosdef = new double[,] {
            { 10.0596,    0.6708,    0.1079,    0.1817,    0.7366,    0.1991,    0.4254,    0.7312,    0.4871,    0.5281 },
             { 0.6708,   10.5186,    0.6820,    0.5403,    0.8603,    0.5774,    0.4968,    0.6008,    0.1870,    0.5064 },
             { 0.1079,    0.6820,   10.8314,    0.4094,    0.0566,    0.5328,    0.7044,    0.3039,    0.6370,    0.7229 },
@@ -35,7 +36,7 @@ namespace MKLtest.Benchmarks
             { 0.5281,    0.5064,    0.7229,    0.3001,    0.7887,    0.0968,    0.6404,    0.4479,    0.1346,   10.1788 }};
 
         // singular
-        public double[,] matrixSingular = new double[,] {
+        public static double[,] matrixSingular = new double[,] {
             { 5.0389,    0.2156,    9.4373,    8.2953,    4.0673,    3.8888,    4.5039,    2.7529,    5.7474,    1.1704 },
             { 6.4681,    5.5984,    5.4916,    8.4909,    6.6693,    4.5474,    2.0567,    7.1667,    3.2604,    8.1468 },
             { 3.0775,    3.0082,    7.2839,    3.7253,    9.3373,    2.4669,    8.9965,    2.8338,    4.5642,    3.2486 },
@@ -47,9 +48,12 @@ namespace MKLtest.Benchmarks
             { 6.6851,    5.9753,    3.7231,    6.5385,    9.8797,    1.4888,    1.2281,    8.3437,    4.3851,    3.9582 },
             { 1.3350,    8.8402,    9.3713,    0.7205,    8.6415,    8.9971,    4.0732,    6.0963,    4.3782,    3.9813 }};
 
-        public double[] x = new double[] { 3.4484, 1.9563, 2.7385, 4.2828, 5.3064, 4.3251, 0.1117, 4.0487, 2.6311, 2.6269 };
-        public double[] matrixPivot_x = new double[] { 129.6255, 24.9998, 136.5104, 138.4874, 94.5804, 129.8738, 69.8411, 101.5039, 189.2711, 166.3288 };
-        public double[] matrixPosdef_x = new double[] { 47.5221, 38.4450, 40.6103, 56.7521, 69.8638, 57.1604, 16.9381, 53.8137, 42.7137, 39.6583 };
-        public double[] matrixSing_x = new double[] { 147.4165, 198.9431, 145.6368, 203.7051, 187.6598, 194.9344, 171.2053, 206.4243, 187.6598, 182.5304 };
+        public static double[] x = new double[] { 3.4484, 1.9563, 2.7385, 4.2828, 5.3064, 4.3251, 0.1117, 4.0487, 2.6311, 2.6269 };
+        public static double[] matrixPivot_x = Utilities.MatrixTimesVector(matrixPivot, x);
+        public static double[] matrixPosdef_x = Utilities.MatrixTimesVector(matrixPosdef, x);
+        public static double[] matrixSing_x = Utilities.MatrixTimesVector(matrixSingular, x);
+        //public static double[] matrixPivot_x = new double[] { 129.6255, 24.9998, 136.5104, 138.4874, 94.5804, 129.8738, 69.8411, 101.5039, 189.2711, 166.3288 };
+        //public static double[] matrixPosdef_x = new double[] { 47.5221, 38.4450, 40.6103, 56.7521, 69.8638, 57.1604, 16.9381, 53.8137, 42.7137, 39.6583 };
+        //public static double[] matrixSing_x = new double[] { 147.4165, 198.9431, 145.6368, 203.7051, 187.6598, 194.9344, 171.2053, 206.4243, 187.6598, 182.5304 };
     }
 }

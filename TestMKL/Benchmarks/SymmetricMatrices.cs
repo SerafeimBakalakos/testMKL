@@ -4,12 +4,14 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace MKLtest.Benchmarks
+namespace TestMKL.Benchmarks
 {
-    class SymmetricMatrices
+    static class SymmetricMatrices
     {
+        public const int order = 10;
+
         // positive definite
-        public double[,] matrixPosdef = new double[,] {
+        public static double[,] matrixPosdef = new double[,] {
             { 8.9156,    0.4590,    0.0588,    0.5776,    0.7118,    0.7423,    0.4389,    0.4353,    0.4929,    0.7223 },
             { 0.4590,    7.5366,    0.4276,    0.3282,    0.5277,    0.4274,    0.2498,    0.7622,    0.4987,    0.8953 },
             { 0.0588,    0.4276,    6.4145,    0.4144,    0.5954,    0.6196,    0.3257,    0.5084,    0.6342,    0.5270 },
@@ -22,7 +24,7 @@ namespace MKLtest.Benchmarks
             { 0.7223,    0.8953,    0.5270,    0.3928,    0.5276,    0.7933,    0.2763,    0.6254,    0.3035,    9.6122 }};
 
         // singular
-        public double[,] matrixSingular = new double[,] {
+        public static double[,] matrixSingular = new double[,] {
             {3.3300,    3.3300,    3.3300,    3.3300,    3.3300,    3.3300,    3.3300,    3.3300,    3.3300,    3.3300},
             {3.3300,    3.3300,    3.3300,    3.3300,    3.3300,    3.3300,    3.3300,    3.3300,    3.3300,    3.3300},
             {3.3300,    3.3300,    3.3300,    3.3300,    3.3300,    3.3300,    3.3300,    3.3300,    3.3300,    3.3300},
@@ -34,8 +36,13 @@ namespace MKLtest.Benchmarks
             {3.3300,    3.3300,    3.3300,    3.3300,    3.3300,    3.3300,    3.3300,    3.3300,    3.3300,    3.3300},
             {3.3300,    3.3300,    3.3300,    3.3300,    3.3300,    3.3300,    3.3300,    3.3300,    3.3300,    3.3300}};
 
-        public double[] x = new double[] { 2.6621, 3.5825, 0.8965, 1.6827, 0.9386, 1.6096, 2.0193, 2.7428, 0.2437, 2.7637 };
-        public double[] matrixPosdef_x = new double[] { 32.4627, 35.5315, 13.3556, 21.6631, 18.8020, 28.5401, 22.6822, 30.2996, 10.6171, 36.9482 };
-        public double[] matrixSing_x = new double[] { 63.7412, 63.7412, 63.7412, 63.7412, 63.7412, 63.7412, 63.7412, 63.7412, 63.7412, 63.7412 };
+        public static double[] x = 
+            new double[] { 2.6621, 3.5825, 0.8965, 1.6827, 0.9386, 1.6096, 2.0193, 2.7428, 0.2437, 2.7637 };
+
+        public static double[] matrixPosdef_x = Utilities.MatrixTimesVector(matrixPosdef, x);
+        public static double[] matrixSing_x = Utilities.MatrixTimesVector(matrixSingular, x);
+
+        //public static double[] matrixPosdef_x = new double[] { 32.4627, 35.5315, 13.3556, 21.6631, 18.8020, 28.5401, 22.6822, 30.2996, 10.6171, 36.9482 };
+        //public static double[] matrixSing_x = new double[] { 63.7412, 63.7412, 63.7412, 63.7412, 63.7412, 63.7412, 63.7412, 63.7412, 63.7412, 63.7412 };
     }
 }

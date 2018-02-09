@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using IntelMKL.ILP64;
 
-namespace MKLtest.Tests
+namespace TestMKL.Tests
 {
     public class ComputeNETexample
     {

@@ -4,12 +4,14 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace MKLtest.Benchmarks
+namespace TestMKL.Benchmarks
 {
-    class TriangularMatrices
+    static class TriangularMatrices
     {
+        public const int order = 10;
+
         //Non singular
-        public double[,] lower = new double[,] {
+        public static double[,] lower = new double[,] {
             {4.2289,         0,         0,         0,         0,         0,         0,         0,         0,         0},
             {0.9423,    6.5445,         0,         0,         0,         0,         0,         0,         0,         0},
             {5.9852,    4.0762,    0.9082,         0,         0,         0,         0,         0,         0,         0},
@@ -22,7 +24,7 @@ namespace MKLtest.Benchmarks
             {3.1960,    6.1096,    8.7537,    0.6799,    3.8677,    0.3576,    9.1742,    6.4444,    4.5014,    6.1346}};
 
         //Singular
-        public double[,] lowerSing = new double[,] {
+        public static double[,] lowerSing = new double[,] {
             {4.2289,         0,         0,         0,         0,         0,         0,         0,         0,         0},
             {0.9423,    6.5445,         0,         0,         0,         0,         0,         0,         0,         0},
             {5.9852,    4.0762,    0.9082,         0,         0,         0,         0,         0,         0,         0},
@@ -35,7 +37,7 @@ namespace MKLtest.Benchmarks
             {3.1960,    6.1096,    8.7537,    0.6799,    3.8677,    0.3576,    9.1742,    6.4444,    4.5014,    6.1346}};
 
         //Non singular
-        public double[,] upper = new double[,] {
+        public static double[,] upper = new double[,] {
             {4.2289,    5.3086,   7.7880,    5.1805,    2.5479,    9.1599,    1.7587,    2.6906,    6.4762,    4.5873},
             { 0,        6.5445,   4.2345,    9.4362,    2.2404,    0.0115,    7.2176,    7.6550,    6.7902,    6.6194},
             { 0,         0,       0.9082,    6.3771,    6.6783,    4.6245,    4.7349,    1.8866,    6.3579,    7.7029},
@@ -48,7 +50,7 @@ namespace MKLtest.Benchmarks
             { 0,         0,        0,        0,         0,          0,        0,         0,         0,    	   6.1346}};
 
         //Singular
-        public double[,] upperSing = new double[,] {
+        public static double[,] upperSing = new double[,] {
             {4.2289,    5.3086,   7.7880,    5.1805,    2.5479,    9.1599,    1.7587,    2.6906,    6.4762,    4.5873},
             { 0,        6.5445,   4.2345,    9.4362,    2.2404,    0.0115,    7.2176,    7.6550,    6.7902,    6.6194},
             { 0,         0,       0.0000,    6.3771,    6.6783,    4.6245,    4.7349,    1.8866,    6.3579,    7.7029},
@@ -60,14 +62,17 @@ namespace MKLtest.Benchmarks
             { 0,         0,        0,        0,         0,         0,         0,         0,         6.0730,    2.5644},
             { 0,         0,        0,        0,         0,         0,         0,         0,         0,         6.1346}};
 
-        public double[] x = new double[] { 0.5822, 0.5407, 0.8699, 0.2648, 0.3181, 0.1192, 0.9398, 0.6456, 0.4795, 0.6393 };
+        public static double[] x = 
+            new double[] { 0.5822, 0.5407, 0.8699, 0.2648, 0.3181, 0.1192, 0.9398, 0.6456, 0.4795, 0.6393 };
 
-        public double[] lower_x = new double[] { 2.4621, 4.0872, 6.4786, 12.0293, 11.0058, 16.9480, 15.5189, 19.7436, 17.2118, 33.0947 };
+        public static double[] lower_x = Utilities.MatrixTimesVector(lower, x);
+        public static double[] lowerSing_x = Utilities.MatrixTimesVector(lowerSing, x);
+        public static double[] upper_x = Utilities.MatrixTimesVector(upper, x);
+        public static double[] upperSing_x = Utilities.MatrixTimesVector(upperSing, x);
 
-        public double[] lowerSing_x = new double[] { 2.4621, 4.0872, 6.4786, 12.0293, 11.0058, 11.0058, 15.5189, 19.7436, 17.2118, 33.0947 };
-
-        public double[] upper_x = new double[] { 24.8092, 29.6478, 18.7952, 15.7902, 10.6732, 16.4078, 12.7290, 9.4262, 4.5514, 3.9218 };
-
-        public double[] upperSing_x = new double[] { 24.8092, 29.6478, 18.0052, 15.7902, 10.6732, 16.4078, 12.7290, 9.4262, 4.5514, 3.9218 };
+        //public static double[] lower_x = new double[] { 2.4621, 4.0872, 6.4786, 12.0293, 11.0058, 16.9480, 15.5189, 19.7436, 17.2118, 33.0947 };
+        //public static double[] lowerSing_x = new double[] { 2.4621, 4.0872, 6.4786, 12.0293, 11.0058, 11.0058, 15.5189, 19.7436, 17.2118, 33.0947 };
+        //public static double[] upper_x = new double[] { 24.8092, 29.6478, 18.7952, 15.7902, 10.6732, 16.4078, 12.7290, 9.4262, 4.5514, 3.9218 };
+        //public static double[] upperSing_x = new double[] { 24.8092, 29.6478, 18.0052, 15.7902, 10.6732, 16.4078, 12.7290, 9.4262, 4.5514, 3.9218 };
     }
 }
