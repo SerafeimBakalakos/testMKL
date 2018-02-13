@@ -59,7 +59,7 @@ namespace TestMKL
             return array1D;
         }
 
-        public static double[] Array2DToPackedLowerColumnMajor(double[,] array2D)
+        public static double[] Array2DToPackedLowerColMajor(double[,] array2D)
         {
             if (array2D.GetLength(0) != array2D.GetLength(1))
             {

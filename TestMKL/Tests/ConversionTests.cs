@@ -71,7 +71,7 @@ namespace TestMKL.Tests
             double[,] rowMajor2Lower = Conversions.PackedLowerRowMajorToArray2D(lowerPackedRow);
             PrintMessage("row major 1D array", "2D lower array", Utilities.AreIdentical(rowMajor2Lower, lower));
 
-            double[] lower2ColMajor = Conversions.Array2DToPackedLowerColumnMajor(lower);
+            double[] lower2ColMajor = Conversions.Array2DToPackedLowerColMajor(lower);
             PrintMessage("2D lower array", "col major 1D array", Utilities.AreIdentical(lower2ColMajor, lowerPackedCol));
             double[,] colMajor2Lower = Conversions.PackedLowerColumnMajorToArray2D(lowerPackedCol);
             PrintMessage("col major 1D array", "2D lower array", Utilities.AreIdentical(colMajor2Lower, lower));
@@ -94,7 +94,7 @@ namespace TestMKL.Tests
             double[,] lowerRowMajor2Symm = Conversions.Array2DLowerToSymmetric(Conversions.PackedLowerRowMajorToArray2D(symmLowerRow));
             PrintMessage("lower row major 1D array", "2D symmetric array", Utilities.AreIdentical(lowerRowMajor2Symm, symm));
 
-            double[] symm2LowerColMajor = Conversions.Array2DToPackedLowerColumnMajor(symm);
+            double[] symm2LowerColMajor = Conversions.Array2DToPackedLowerColMajor(symm);
             PrintMessage("2D symmetric array", "lower col major 1D array", Utilities.AreIdentical(symm2LowerColMajor, symmLowerCol));
             double[,] lowerColMajor2Symm = Conversions.Array2DLowerToSymmetric(Conversions.PackedLowerColumnMajorToArray2D(symmLowerCol));
             PrintMessage("lower col major 1D array", "2D symmetric array", Utilities.AreIdentical(lowerColMajor2Symm, symm));

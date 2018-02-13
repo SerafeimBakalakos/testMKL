@@ -61,7 +61,7 @@ namespace TestMKL.Tests
             error = CheckSubstitution(TriangularMatrices.lower, TriangularMatrices.lower_x, TriangularMatrices.x, x);
 
             // This should fail
-            double[] lowerSing = Conversions.Array2DToPackedLowerColumnMajor(TriangularMatrices.lowerSing);
+            double[] lowerSing = Conversions.Array2DToPackedLowerColMajor(TriangularMatrices.lowerSing);
             x = new double[n];
             Array.Copy(TriangularMatrices.lowerSing_x, x, n);
             CBlas.Dtpsv(CBLAS_LAYOUT.CblasColMajor, CBLAS_UPLO.CblasLower, CBLAS_TRANSPOSE.CblasNoTrans, CBLAS_DIAG.CblasNonUnit,

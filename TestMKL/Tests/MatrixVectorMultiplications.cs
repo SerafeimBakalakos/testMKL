@@ -50,7 +50,7 @@ namespace TestMKL.Tests
                 n, ref lower[0], ref lower_x[0], 1);
             error = CheckMultiplication(TriangularMatrices.lower, x, TriangularMatrices.lower_x, lower_x);
 
-            double[] lowerSing = Conversions.Array2DToPackedLowerColumnMajor(TriangularMatrices.lowerSing);
+            double[] lowerSing = Conversions.Array2DToPackedLowerColMajor(TriangularMatrices.lowerSing);
             double[] lowerSing_x = new double[n];
             Array.Copy(x, lowerSing_x, n);
             CBlas.Dtpmv(CBLAS_LAYOUT.CblasColMajor, CBLAS_UPLO.CblasLower, CBLAS_TRANSPOSE.CblasNoTrans, CBLAS_DIAG.CblasNonUnit,
