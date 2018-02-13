@@ -1,3 +1,4 @@
 packages/Compute.Winx64.IntelMKL.2018.1.156.1/
 TestMKL/bin/
 .vs/
+TestMKL/obj/
