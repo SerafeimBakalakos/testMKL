@@ -84,11 +84,11 @@ namespace TestMKL.Tests
                 1.0, ref matrixPosdef[0], ref x[0], 1, 0.0, ref matrixPosdef_x[0], 1);
             error = CheckMultiplication(SymmetricMatrices.matrixPosdef, x, SymmetricMatrices.matrixPosdef_x, matrixPosdef_x);
 
-            double[] matrixSing = Conversions.Array2DToPackedUpperColMajor(SymmetricMatrices.matrixSingular);
+            double[] matrixSing = Conversions.Array2DToPackedUpperColMajor(SymmetricMatrices.matrixSing1);
             double[] matrixSing_x = new double[n];
             CBlas.Dspmv(CBLAS_LAYOUT.CblasColMajor, CBLAS_UPLO.CblasUpper, n,
                 1.0, ref matrixSing[0], ref x[0], 1, 0.0, ref matrixSing_x[0], 1);
-            error = CheckMultiplication(SymmetricMatrices.matrixSingular, x, SymmetricMatrices.matrixSing_x, matrixSing_x);
+            error = CheckMultiplication(SymmetricMatrices.matrixSing1, x, SymmetricMatrices.matrixSing1_x, matrixSing_x);
         }
 
         private static bool CheckMultiplication(double[,] matrix, double[] x, double[] bExpected, double[] bComputed,

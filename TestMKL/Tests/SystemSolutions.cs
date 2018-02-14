@@ -12,6 +12,8 @@ namespace TestMKL.Tests
     // Also automate error checking and sentinel values. 
     // Even better, make shortcut methods that handle most error checking for common LAPACK funcs. 
     // +1 indirection layer but necessary. Also I can remove the need for a wraper library in the future.
+    // TODO: These should be methods of benchmark objects/classes, one for each matrix. 
+    // All MKL logic would be contained in a matrix class method. Most of the rest would be contained in utility functions.
     static class SystemSolutions
     {
         private const bool printAnyway = true;
@@ -22,8 +24,10 @@ namespace TestMKL.Tests
         public static void Main()
         {
             //SolveInvertible();
-            SolveSingular1();
-            SolveSingular2();
+            //SolveSingular1();
+            //SolveSingular2();
+            //SolveSymmPosDef();
+            SolveSymmSingular1();
         }
 
         public static void SolveInvertible()
@@ -39,7 +43,7 @@ namespace TestMKL.Tests
             Lapack.Dgetrf(ref n, ref n, ref matrix[0], ref n, ref permutation[0], ref infoFact);
             //if (n != DenseMatrices.order) throw new ApplicationException(errorMsg1);
             bool isInvertible = ProcessLUFactorizationInfo(infoFact, n, matrix);
-            CheckFactorization(DenseMatrices.matrixPivot, DenseMatrices.matrixPivot_L, DenseMatrices.matrixPivot_U, matrix);
+            CheckLUFactorization(DenseMatrices.matrixPivot, DenseMatrices.matrixPivot_L, DenseMatrices.matrixPivot_U, matrix);
 
             //Triangular solutions
             if (!isInvertible)
@@ -68,7 +72,7 @@ namespace TestMKL.Tests
             Lapack.Dgetrf(ref n, ref n, ref matrix[0], ref n, ref permutation[0], ref infoFact);
             //if (n != DenseMatrices.order) throw new ApplicationException(errorMsg1);
             bool isInvertible = ProcessLUFactorizationInfo(infoFact, n, matrix); // This should throw an exception!!!!!
-            CheckFactorization(DenseMatrices.matrixSing1, DenseMatrices.matrixSing1_L, DenseMatrices.matrixSing1_U, matrix);
+            CheckLUFactorization(DenseMatrices.matrixSing1, DenseMatrices.matrixSing1_L, DenseMatrices.matrixSing1_U, matrix);
 
             //Triangular solutions
             if (!isInvertible)
@@ -97,7 +101,7 @@ namespace TestMKL.Tests
             Lapack.Dgetrf(ref n, ref n, ref matrix[0], ref n, ref permutation[0], ref infoFact);
             //if (n != DenseMatrices.order) throw new ApplicationException(errorMsg1);
             bool isInvertible = ProcessLUFactorizationInfo(infoFact, n, matrix); // This should throw an exception!!!!!
-            CheckFactorization(DenseMatrices.matrixSing2, DenseMatrices.matrixSing2_L, DenseMatrices.matrixSing2_U, matrix);
+            CheckLUFactorization(DenseMatrices.matrixSing2, DenseMatrices.matrixSing2_L, DenseMatrices.matrixSing2_U, matrix);
 
             //Triangular solutions
             if (!isInvertible)
@@ -115,12 +119,58 @@ namespace TestMKL.Tests
 
         public static void SolveSymmPosDef()
         {
+            int n = SymmetricMatrices.order;
+            double[] matrix = Conversions.Array2DToPackedUpperColMajor(SymmetricMatrices.matrixPosdef);
+            double[] b = new double[n];
+            Array.Copy(SymmetricMatrices.matrixPosdef_x, b, n);
 
+            //Cholesky factorization
+            int infoFact = DefaultInfo;
+            Lapack.Dpptrf("U", ref n, ref matrix[0], ref infoFact);
+            bool success = ProcessCholeskyFactorizationInfo(infoFact);
+            double[,] uComputed = Conversions.PackedUpperColMajorToArray2D(matrix);
+
+            //Triangular solutions
+            if (!success)
+            {
+                Console.WriteLine("Matrix is not positive. Factorization may have failed. Please use LU instead.");
+                return;
+            }
+            CheckCholeskyFactorization(SymmetricMatrices.matrixPosdef, SymmetricMatrices.matrixPosdef_U, uComputed);
+            int infoSolve = DefaultInfo;
+            int nRhs = 1; // rhs is a n x nRhs matrix, stored in b
+            int ldb = n; // column major ordering: leading dimension of b is n 
+            Lapack.Dpptrs("U", ref n, ref nRhs, ref matrix[0], ref b[0], ref ldb, ref infoSolve);
+            ProcessSolutionInfo(infoSolve);
+            CheckSolution(SymmetricMatrices.matrixPosdef, SymmetricMatrices.matrixPosdef_x, SymmetricMatrices.x, b);
         }
 
-        public static void SolveSymmSingular()
+        public static void SolveSymmSingular1()
         {
+            int n = SymmetricMatrices.order;
+            double[] matrix = Conversions.Array2DToPackedUpperColMajor(SymmetricMatrices.matrixSing1);
+            double[] b = new double[n];
+            Array.Copy(SymmetricMatrices.matrixSing1_x, b, n);
 
+            //Cholesky factorization
+            int infoFact = DefaultInfo;
+            Lapack.Dpptrf("U", ref n, ref matrix[0], ref infoFact);
+            bool success = ProcessCholeskyFactorizationInfo(infoFact);
+            double[,] uComputed = Conversions.PackedUpperColMajorToArray2D(matrix);
+
+            //Triangular solutions
+            if (!success)
+            {
+                Console.WriteLine("Matrix is not positive. Factorization may have failed. Please use LU instead.");
+                return;
+            }
+            CheckCholeskyFactorization(SymmetricMatrices.matrixSing1, SymmetricMatrices.matrixSing1_U, uComputed);
+            int infoSolve = DefaultInfo;
+            int nRhs = 1; // rhs is a n x nRhs matrix, stored in b
+            int ldb = n; // column major ordering: leading dimension of b is n 
+            Lapack.Dpptrs("U", ref n, ref nRhs, ref matrix[0], ref b[0], ref ldb, ref infoSolve);
+            ProcessSolutionInfo(infoSolve);
+            CheckSolution(SymmetricMatrices.matrixSing1, SymmetricMatrices.matrixSing1_x, SymmetricMatrices.x, b);
         }
 
         public static void SolveSymmIndefinite()
@@ -159,21 +209,7 @@ namespace TestMKL.Tests
             return true;
         }
 
-        private static void ProcessSolutionInfo(int info)
-        {
-            if (info == DefaultInfo)
-            {
-                throw new ApplicationException("The LAPACK call did not produce an info result. Something went wrong");
-            }
-            else if (info < 0)
-            {
-
-                string msg = string.Format("The {0}th parameter has an illegal value", (int)Math.Abs(info));
-                throw new ArgumentException(msg);
-            }
-        }
-
-        private static bool CheckFactorization(double[,] matrix, double[,] lExpected, double[,] uExpected,
+        private static bool CheckLUFactorization(double[,] matrix, double[,] lExpected, double[,] uExpected,
             double[] luComputed, double tol = 1e-13)
         {
             double[,] lComputed = Conversions.FullLowerColMajorToArray2D(luComputed, true);
@@ -196,7 +232,7 @@ namespace TestMKL.Tests
             double[,] lComputed, double[,] uComputed, string result)
         {
             Console.WriteLine("************************************************************************************");
-            Console.WriteLine("The following factorization is " + result + ":");
+            Console.WriteLine("The following LU factorization is " + result + ":");
             Console.Write("A = ");
             Utilities.PrintArray(matrix);
             Console.WriteLine();
@@ -213,6 +249,77 @@ namespace TestMKL.Tests
             Utilities.PrintArray(uComputed);
             Console.WriteLine("************************************************************************************");
             Console.WriteLine();
+        }
+
+        //Returns true for success, false if the matrix was not positive definite
+        private static bool ProcessCholeskyFactorizationInfo(int info)
+        {
+            if (info == DefaultInfo)
+            {
+                Console.WriteLine("After Cholesky factorization: ");
+                //Utilities.PrintArray(Conversions.FullColMajorToArray2D(lu, n, n));
+                throw new ApplicationException("The LAPACK call did not produce an info result. Something went wrong");
+            }
+            else if (info < 0)
+            {
+
+                string msg = string.Format("The {0}th parameter has an illegal value", (int)Math.Abs(info));
+                throw new ArgumentException(msg);
+            }
+            else if (info > 0)
+            {
+                //TODO: In an OOP world, this should be done using exceptions, not return values. 
+                // The client would catch the SingularMatrixException if he wants to continue.
+                // The other exceptions would still crush the program
+                PrintMsgCholeskyFail(info - 1);
+                return false;
+            }
+            return true;
+        }
+
+        private static bool CheckCholeskyFactorization(double[,] matrix, double[,] uExpected, double[,] uComputed,
+            double tol = 1e-13)
+        {
+            if (!Utilities.AreIdentical(uExpected, uComputed, tol))
+            {
+                PrintFactorization(matrix, uExpected, uComputed, "INCORRECT");
+                return true;
+            }
+            else if (printAnyway)
+            {
+                PrintFactorization(matrix, uExpected, uComputed, "CORRECT");
+            }
+            return false;
+        }
+
+        private static void PrintFactorization(double[,] matrix, double[,] uExpected, double[,] uComputed, string result)
+        {
+            Console.WriteLine("************************************************************************************");
+            Console.WriteLine("The following Cholesky factorization is " + result + ":");
+            Console.Write("A = ");
+            Utilities.PrintArray(matrix);
+            Console.WriteLine();
+            Console.Write("U (expected) = ");
+            Utilities.PrintArray(uExpected);
+            Console.WriteLine();
+            Console.Write("U (computed) = ");
+            Utilities.PrintArray(uComputed);
+            Console.WriteLine("************************************************************************************");
+            Console.WriteLine();
+        }
+
+        private static void ProcessSolutionInfo(int info)
+        {
+            if (info == DefaultInfo)
+            {
+                throw new ApplicationException("The LAPACK call did not produce an info result. Something went wrong");
+            }
+            else if (info < 0)
+            {
+
+                string msg = string.Format("The {0}th parameter has an illegal value", -info);
+                throw new ArgumentException(msg);
+            }
         }
 
         private static bool CheckSolution(double[,] matrix, double[] b, double[] xExpected, double[] xComputed,
@@ -255,6 +362,12 @@ namespace TestMKL.Tests
             Console.Write("U[{0}, {1}] = 0. The factorization has been completed, but U is exactly singular. ", 
                 zeroPivotIdx, zeroPivotIdx);
             Console.WriteLine("Division by 0 will occur if you use the factor U for solving a system of linear equations.");
+        }
+
+        private static void PrintMsgCholeskyFail(int leadingMinorIdx)
+        {
+            Console.WriteLine("The leading minor of order " + leadingMinorIdx + " (and therefore the matrix itself) is not"
+                + " positive-definite, and the factorization could not be completed.");
         }
     }
 }

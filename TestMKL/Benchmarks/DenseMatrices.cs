@@ -11,7 +11,6 @@ namespace TestMKL.Benchmarks
         public const int order = 10;
 
         #region Matrices
-
         // During LU (and elimination) it will need pivoting at entry [2,2]
         public static double[,] matrixPivot = new double[,] {
             { 1.0000,    2.6667,    7.0000,    5.0000,    2.5000,    9.0000,    6.0000,    2.2500,    4.0000,    3.0000 },
@@ -71,9 +70,6 @@ namespace TestMKL.Benchmarks
         public static double[] matrixPosdef_x = Utilities.MatrixTimesVector(matrixPosdef, x);
         public static double[] matrixSing1_x = Utilities.MatrixTimesVector(matrixSing1, x);
         public static double[] matrixSing2_x = Utilities.MatrixTimesVector(matrixSing2, x);
-        //public static double[] matrixPivot_x = new double[] { 129.6255, 24.9998, 136.5104, 138.4874, 94.5804, 129.8738, 69.8411, 101.5039, 189.2711, 166.3288 };
-        //public static double[] matrixPosdef_x = new double[] { 47.5221, 38.4450, 40.6103, 56.7521, 69.8638, 57.1604, 16.9381, 53.8137, 42.7137, 39.6583 };
-        //public static double[] matrixSing_x = new double[] { 147.4165, 198.9431, 145.6368, 203.7051, 187.6598, 194.9344, 171.2053, 206.4243, 187.6598, 182.5304 };
         #endregion
 
         #region factorization
