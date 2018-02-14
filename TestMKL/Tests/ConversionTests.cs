@@ -58,9 +58,9 @@ namespace TestMKL.Tests
             double[,] rowMajor2Full = Conversions.FullRowMajorToArray2D(fullRow, order, order);
             PrintMessage("row major 1D array", "2D full array", Utilities.AreIdentical(rowMajor2Full, full));
 
-            double[] full2ColMajor = Conversions.Array2DToFullColumnMajor(full);
+            double[] full2ColMajor = Conversions.Array2DToFullColMajor(full);
             PrintMessage("2D full array", "col major 1D array", Utilities.AreIdentical(full2ColMajor, fullCol));
-            double[,] colMajor2Full = Conversions.FullColumnMajorToArray2D(fullCol, order, order);
+            double[,] colMajor2Full = Conversions.FullColMajorToArray2D(fullCol, order, order);
             PrintMessage("col major 1D array", "2D full array", Utilities.AreIdentical(colMajor2Full, full));
         }
 
@@ -73,7 +73,7 @@ namespace TestMKL.Tests
 
             double[] lower2ColMajor = Conversions.Array2DToPackedLowerColMajor(lower);
             PrintMessage("2D lower array", "col major 1D array", Utilities.AreIdentical(lower2ColMajor, lowerPackedCol));
-            double[,] colMajor2Lower = Conversions.PackedLowerColumnMajorToArray2D(lowerPackedCol);
+            double[,] colMajor2Lower = Conversions.PackedLowerColMajorToArray2D(lowerPackedCol);
             PrintMessage("col major 1D array", "2D lower array", Utilities.AreIdentical(colMajor2Lower, lower));
 
             double[] upper2RowMajor = Conversions.Array2DToPackedUpperRowMajor(upper);
@@ -81,9 +81,9 @@ namespace TestMKL.Tests
             double[,] rowMajor2Upper = Conversions.PackedUpperRowMajorToArray2D(upperPackedRow);
             PrintMessage("row major 1D array", "2D upper array", Utilities.AreIdentical(rowMajor2Upper, upper));
 
-            double[] upper2ColMajor = Conversions.Array2DToPackedUpperColumnMajor(upper);
+            double[] upper2ColMajor = Conversions.Array2DToPackedUpperColMajor(upper);
             PrintMessage("2D upper array", "col major 1D array", Utilities.AreIdentical(upper2ColMajor, upperPackedCol));
-            double[,] colMajor2Upper = Conversions.PackedUpperColumnMajorToArray2D(upperPackedCol);
+            double[,] colMajor2Upper = Conversions.PackedUpperColMajorToArray2D(upperPackedCol);
             PrintMessage("col major 1D array", "2D upper array", Utilities.AreIdentical(colMajor2Upper, upper));
         }
 
@@ -96,7 +96,7 @@ namespace TestMKL.Tests
 
             double[] symm2LowerColMajor = Conversions.Array2DToPackedLowerColMajor(symm);
             PrintMessage("2D symmetric array", "lower col major 1D array", Utilities.AreIdentical(symm2LowerColMajor, symmLowerCol));
-            double[,] lowerColMajor2Symm = Conversions.Array2DLowerToSymmetric(Conversions.PackedLowerColumnMajorToArray2D(symmLowerCol));
+            double[,] lowerColMajor2Symm = Conversions.Array2DLowerToSymmetric(Conversions.PackedLowerColMajorToArray2D(symmLowerCol));
             PrintMessage("lower col major 1D array", "2D symmetric array", Utilities.AreIdentical(lowerColMajor2Symm, symm));
 
             double[] symm2UpperRowMajor = Conversions.Array2DToPackedUpperRowMajor(symm);
@@ -104,9 +104,9 @@ namespace TestMKL.Tests
             double[,] upperRowMajor2Symm = Conversions.Array2DUpperToSymmetric(Conversions.PackedUpperRowMajorToArray2D(symmUpperRow));
             PrintMessage("upper row major 1D array", "2D symmetric array", Utilities.AreIdentical(upperRowMajor2Symm, symm));
 
-            double[] symm2UpperColMajor = Conversions.Array2DToPackedUpperColumnMajor(symm);
+            double[] symm2UpperColMajor = Conversions.Array2DToPackedUpperColMajor(symm);
             PrintMessage("2D symmetric array", "upper col major 1D array", Utilities.AreIdentical(symm2UpperColMajor, symmUpperCol));
-            double[,] upperColMajor2Symm = Conversions.Array2DUpperToSymmetric(Conversions.PackedUpperColumnMajorToArray2D(symmUpperCol));
+            double[,] upperColMajor2Symm = Conversions.Array2DUpperToSymmetric(Conversions.PackedUpperColMajorToArray2D(symmUpperCol));
             PrintMessage("upper col major 1D array", "2D symmetric array", Utilities.AreIdentical(lowerColMajor2Symm, symm));
         }
 

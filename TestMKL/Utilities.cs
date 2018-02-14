@@ -33,6 +33,7 @@ namespace TestMKL
             return true;
         }
 
+        // TODO: optional parameters that control formating, such as decimals, right alignment
         public static void PrintArray(double[] array, string separator = " ")
         {
             Console.Write("[");
@@ -43,6 +44,7 @@ namespace TestMKL
             Console.WriteLine(separator + "]");
         }
 
+        // TODO: optional parameters that control formating, such as decimals, right alignment
         public static void PrintArray(double[,] array, string rowSeparator = "\n", string colSeparator = " ")
         {
             Console.Write("[");

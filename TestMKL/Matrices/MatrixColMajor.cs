@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 
 namespace TestMKL.Matrices
 {
+    //TODO: align data using mkl_malloc
     class MatrixColMajor
     {
         private readonly double[] data;
@@ -14,7 +15,7 @@ namespace TestMKL.Matrices
 
         public MatrixColMajor(double[,] data)
         {
-            this.data = Conversions.Array2DToFullColumnMajor(data);
+            this.data = Conversions.Array2DToFullColMajor(data);
             this.numRows = data.GetLength(0);
             this.numCols = data.GetLength(1);
         }

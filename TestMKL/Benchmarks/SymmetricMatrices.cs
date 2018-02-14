@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 
 namespace TestMKL.Benchmarks
 {
+    // TODO: almost positive definite matrix, but with 1d nullspace. LAPACK LU did not flag it as invertible!
     static class SymmetricMatrices
     {
         public const int order = 10;

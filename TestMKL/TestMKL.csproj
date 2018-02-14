@@ -37,7 +37,7 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <PropertyGroup>
-    <StartupObject>TestMKL.Tests.MatrixPerformance</StartupObject>
+    <StartupObject>TestMKL.Tests.SystemSolutions</StartupObject>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Compute.Bindings.IntelMKL, Version=0.1.5.0, Culture=neutral, processorArchitecture=AMD64">
@@ -70,6 +70,7 @@
     <Compile Include="Tests\ComputeNETexample.cs" />
     <Compile Include="Tests\ConversionTests.cs" />
     <Compile Include="Tests\MatrixVectorMultiplications.cs" />
+    <Compile Include="Tests\SystemSolutions.cs" />
     <Compile Include="Tests\TriangularSolutions.cs" />
     <Compile Include="Utilities.cs" />
   </ItemGroup>

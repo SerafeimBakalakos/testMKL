@@ -24,7 +24,7 @@ namespace TestMKL
             return array1D;
         }
 
-        public static double[] Array2DToFullColumnMajor(double[,] array2D)
+        public static double[] Array2DToFullColMajor(double[,] array2D)
         {
             int numRows = array2D.GetLength(0);
             int numColumns = array2D.GetLength(1);
@@ -99,7 +99,7 @@ namespace TestMKL
             return array1D;
         }
 
-        public static double[] Array2DToPackedUpperColumnMajor(double[,] array2D)
+        public static double[] Array2DToPackedUpperColMajor(double[,] array2D)
         {
             if (array2D.GetLength(0) != array2D.GetLength(1))
             {
@@ -132,7 +132,7 @@ namespace TestMKL
             return array2D;
         }
 
-        public static double[,] FullColumnMajorToArray2D(double[] array1D, int numRows, int numColumns)
+        public static double[,] FullColMajorToArray2D(double[] array1D, int numRows, int numColumns)
         {
             double[,] array2D = new double[numRows, numColumns];
             for (int j = 0; j < numColumns; ++j)
@@ -141,6 +141,50 @@ namespace TestMKL
                 {
                     array2D[i, j] = array1D[j * numRows + i];
                 }
+            }
+            return array2D;
+        }
+
+        public static double[,] FullLowerColMajorToArray2D(double[] array1D, bool unitDiagonal)
+        {
+            int n = FullLengthToOrder(array1D.Length);
+            double[,] array2D = new double[n, n];
+            for (int j = 0; j < n; ++j)
+            {
+                for (int i = j + 1; i < n; ++i)
+                {
+                    array2D[i, j] = array1D[j * n + i];
+                }
+            }
+            if (unitDiagonal)
+            {
+                for (int d = 0; d < n; ++d) array2D[d, d] = 1.0;
+            }
+            else
+            {
+                for (int d = 0; d < n; ++d) array2D[d, d] = array1D[d * n + d];
+            }
+            return array2D;
+        }
+
+        public static double[,] FullUpperColMajorToArray2D(double[] array1D, bool unitDiagonal)
+        {
+            int n = FullLengthToOrder(array1D.Length);
+            double[,] array2D = new double[n, n];
+            for (int j = 0; j < n; ++j)
+            {
+                for (int i = 0; i < j; ++i)
+                {
+                    array2D[i, j] = array1D[j * n + i];
+                }
+            }
+            if (unitDiagonal)
+            {
+                for (int d = 0; d < n; ++d) array2D[d, d] = 1.0;
+            }
+            else
+            {
+                for (int d = 0; d < n; ++d) array2D[d, d] = array1D[d * n + d];
             }
             return array2D;
         }
@@ -161,7 +205,7 @@ namespace TestMKL
             return array2D;
         }
 
-        public static double[,] PackedLowerColumnMajorToArray2D(double[] array1D)
+        public static double[,] PackedLowerColMajorToArray2D(double[] array1D)
         {
             int n = PackedLengthToOrder(array1D.Length);
             double[,] array2D = new double[n, n];
@@ -193,7 +237,7 @@ namespace TestMKL
             return array2D;
         }
 
-        public static double[,] PackedUpperColumnMajorToArray2D(double[] array1D)
+        public static double[,] PackedUpperColMajorToArray2D(double[] array1D)
         {
             int n = PackedLengthToOrder(array1D.Length);
             double[,] array2D = new double[n, n];
@@ -247,12 +291,24 @@ namespace TestMKL
             return symm;
         }
 
+        private static int FullLengthToOrder(int length)
+        {
+            // length = n^2 => n = sqrt(length)
+            double n = Math.Sqrt(length);
+            int order = (int)Math.Round(n);
+            if (order * order != length)
+            {
+                throw new ArgumentException("The length of the 1D array must be an integer L such that L=n*n");
+            }
+            return order;
+        }
+
         private static int PackedLengthToOrder(int length)
         {
             // length = n*(n+1)/2 => n = ( -1+sqrt(1+8*length) )/2
             double n = (-1.0 + Math.Sqrt(1 + 8 * length)) / 2;
             int order = (int)Math.Round(n);
-            if (n*(n+1)/2 != length)
+            if (order * (order + 1) / 2 != length)
             {
                 throw new ArgumentException("The length of the 1D array must be an integer L such that L=n*(n+1)/2");
             }

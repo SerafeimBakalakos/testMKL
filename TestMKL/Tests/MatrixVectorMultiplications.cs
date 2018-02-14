@@ -24,11 +24,11 @@ namespace TestMKL.Tests
                 1, ref matrixPivot[0], n, ref x[0], 1, 0.0, ref matrixPivot_x[0], 1);
             error = CheckMultiplication(DenseMatrices.matrixPivot, x, DenseMatrices.matrixPivot_x, matrixPivot_x);
 
-            double[] matrixSing = Conversions.Array2DToFullColumnMajor(DenseMatrices.matrixSingular);
+            double[] matrixSing = Conversions.Array2DToFullColMajor(DenseMatrices.matrixSing1);
             double[] matrixSing_x = new double[n];
             CBlas.Dgemv(CBLAS_LAYOUT.CblasColMajor, CBLAS_TRANSPOSE.CblasNoTrans, n, n,
                 1, ref matrixSing[0], n, ref x[0], 1, 0.0, ref matrixSing_x[0], 1);
-            error = CheckMultiplication(DenseMatrices.matrixSingular, x, DenseMatrices.matrixSing_x, matrixSing_x);
+            error = CheckMultiplication(DenseMatrices.matrixSing1, x, DenseMatrices.matrixSing1_x, matrixSing_x);
 
             double[] matrixPosDef = Conversions.Array2DToFullRowMajor(DenseMatrices.matrixPosdef);
             double[] matrixPosdef_x = new double[n];
@@ -64,7 +64,7 @@ namespace TestMKL.Tests
                 n, ref upper[0], ref upper_x[0], 1);
             error = CheckMultiplication(TriangularMatrices.upper, x, TriangularMatrices.upper_x, upper_x);
 
-            double[] upperSing = Conversions.Array2DToPackedUpperColumnMajor(TriangularMatrices.upperSing);
+            double[] upperSing = Conversions.Array2DToPackedUpperColMajor(TriangularMatrices.upperSing);
             double[] upperSing_x = new double[n];
             Array.Copy(x, upperSing_x, n);
             CBlas.Dtpmv(CBLAS_LAYOUT.CblasColMajor, CBLAS_UPLO.CblasUpper, CBLAS_TRANSPOSE.CblasNoTrans, CBLAS_DIAG.CblasNonUnit,
@@ -84,7 +84,7 @@ namespace TestMKL.Tests
                 1.0, ref matrixPosdef[0], ref x[0], 1, 0.0, ref matrixPosdef_x[0], 1);
             error = CheckMultiplication(SymmetricMatrices.matrixPosdef, x, SymmetricMatrices.matrixPosdef_x, matrixPosdef_x);
 
-            double[] matrixSing = Conversions.Array2DToPackedUpperColumnMajor(SymmetricMatrices.matrixSingular);
+            double[] matrixSing = Conversions.Array2DToPackedUpperColMajor(SymmetricMatrices.matrixSingular);
             double[] matrixSing_x = new double[n];
             CBlas.Dspmv(CBLAS_LAYOUT.CblasColMajor, CBLAS_UPLO.CblasUpper, n,
                 1.0, ref matrixSing[0], ref x[0], 1, 0.0, ref matrixSing_x[0], 1);

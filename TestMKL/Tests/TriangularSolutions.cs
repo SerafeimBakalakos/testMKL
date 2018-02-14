@@ -25,14 +25,14 @@ namespace TestMKL.Tests
             error = CheckSubstitution(TriangularMatrices.lower, TriangularMatrices.lower_x, TriangularMatrices.x, x);
 
             // This should fail
-            double[] lowerSing = Conversions.Array2DToFullColumnMajor(TriangularMatrices.lowerSing);
+            double[] lowerSing = Conversions.Array2DToFullColMajor(TriangularMatrices.lowerSing);
             x = new double[n];
             Array.Copy(TriangularMatrices.lowerSing_x, x, n);
             CBlas.Dtrsv(CBLAS_LAYOUT.CblasColMajor, CBLAS_UPLO.CblasLower, CBLAS_TRANSPOSE.CblasNoTrans, CBLAS_DIAG.CblasNonUnit,
                 n, ref lower[0], n, ref x[0], 1);
             error = CheckSubstitution(TriangularMatrices.lowerSing, TriangularMatrices.lowerSing_x, TriangularMatrices.x, x);
 
-            double[] upper = Conversions.Array2DToFullColumnMajor(TriangularMatrices.upper);
+            double[] upper = Conversions.Array2DToFullColMajor(TriangularMatrices.upper);
             x = new double[n];
             Array.Copy(TriangularMatrices.upper_x, x, n);
             CBlas.Dtrsv(CBLAS_LAYOUT.CblasColMajor, CBLAS_UPLO.CblasUpper, CBLAS_TRANSPOSE.CblasNoTrans, CBLAS_DIAG.CblasNonUnit,
@@ -68,7 +68,7 @@ namespace TestMKL.Tests
                 n, ref lower[0], ref x[0], 1);
             error = CheckSubstitution(TriangularMatrices.lowerSing, TriangularMatrices.lowerSing_x, TriangularMatrices.x, x);
 
-            double[] upper = Conversions.Array2DToPackedUpperColumnMajor(TriangularMatrices.upper);
+            double[] upper = Conversions.Array2DToPackedUpperColMajor(TriangularMatrices.upper);
             x = new double[n];
             Array.Copy(TriangularMatrices.upper_x, x, n);
             CBlas.Dtpsv(CBLAS_LAYOUT.CblasColMajor, CBLAS_UPLO.CblasUpper, CBLAS_TRANSPOSE.CblasNoTrans, CBLAS_DIAG.CblasNonUnit,
